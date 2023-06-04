@@ -1,0 +1,396 @@
+
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} /*Gradient for hero image*/
+
+
+
+body{
+  font-family: 'Inter', sans-serif;
+  color: #F6F1F1;
+  background-color: #146C94;
+}
+
+/* NAV BAR */
+.navbar-custom{
+  background-color: #F6F1F1 !important;
+} /*Background white*/
+.navbar-brand{
+  color: #146C94;
+} /*Text blue*/
+.logoStart{
+  font-family: 'Noto Sans';
+  font-weight: 400;
+  font-size:larger;
+} /*first half of logo font*/
+.logoEnd{
+  font-family: 'Noto Sans';
+  font-weight: 800;
+  font-size:larger;
+} /*second half of logo font*/
+.navbar-toggler{
+  border-color: #146C94;
+} /*mobile toggler border*/
+
+.navbar-custom:active{
+  border-color: #146C94;
+  border-radius: 5px;
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(20,108,148, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+} /*mobile toggler image*/
+.custom-toggler.navbar-toggler {
+  border-color: rgb(20,108,148);
+}  /*mobile toggler color*/
+a {
+  color: #146C94 !important;
+}/* Navbar links blue*/
+
+
+.btnGetStarted{
+  background-color: #FF8C00;
+  color: whitesmoke;
+  border-style: none;
+  margin: 5% 0%;
+  padding: 3% 5%;
+  font-weight: 400 ;
+  font-size: larger;
+  min-width: 250px;
+}
+
+.getStarted:hover{
+  background-color: whitesmoke;
+  color: #146C94;
+}
+
+.container-fluid{
+  max-width: 1366px !important;
+}
+
+.icon-square {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+}
+
+.profile-img {
+  height: 100px;
+  border-radius: 50%;
+}
+
+h1{
+  color:whitesmoke !important;
+}
+
+
+.heroColumn {
+  margin: auto;
+  padding:5% 2.5%;
+  text-align: center;
+}
+
+.imgHero{
+width: 80%;
+margin-left: 10%;
+margin-right: 10%;
+}
+
+.title{
+
+
+}
+
+
+
+
+.gradientBackground {
+  background: linear-gradient(-45deg, #146C94 , #19A7CE, #AFD3E2);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.feature-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 0.75rem;
+  background-color: #AFD3E2 !important;
+}
+
+.feature-icon>span{
+  color: #146C94;
+}
+
+.feature>p{
+  color: #AFD3E2;
+}
+
+.pb-2{
+  color: #F6F1F1;
+  font-weight: 600;
+  font-size: xx-large;
+}
+
+#pricingDiv{
+  background-color: #19A7CE;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: gray;
+}
+
+#pricing .card{
+background-color: transparent;
+border-color: whitesmoke;
+color: whitesmoke
+}
+
+#pricing .card-header{
+  border-color: whitesmoke;
+}
+
+
+
+
+   
+@media screen and (min-width: 577px) {      
+  #carousel-1{      
+    	background-image: url("/images/lazada_ss_proceed_to_checkout.png");
+    } 
+
+    #carousel-2{      
+    	background-image: url("/images/lazada_ss_edit_address.png");
+    } 
+
+    #carousel-3{      
+    	background-image: url("/images/lazada_ss_proceed_to_checkout.png");
+    } 
+
+
+  /* Carousel base class */
+  .carousel {
+    margin-bottom: 4rem;
+  }
+  /* Since positioning the image, we need to help out the caption */
+  .carousel-caption {
+    bottom: 3rem;
+    z-index: 10;
+  }
+  
+  /* Declare heights because of positioning of img element */
+  .carousel-item {
+    height: 32rem;
+  }
+  
+  
+  .marketing .col-lg-4 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  /* rtl:begin:ignore */
+  .marketing .col-lg-4 p {
+    margin-right: .75rem;
+    margin-left: .75rem;
+  }
+
+  
+  .featurette-divider {
+    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+  }
+
+  .featurette-heading {
+    letter-spacing: -.05rem;
+  }
+  
+
+
+    
+  .carousel-item {
+    position: relative; /* Ensure positioning context */
+  }
+  
+  .carousel-caption {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px; /* Adjust the height as needed */
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    padding: 1rem;
+    overflow: auto; /* Enable scrolling if the text exceeds the height */
+  }
+  
+  .carousel-caption h2,
+  .carousel-caption p {
+    color: #FFF;
+  }
+  
+  
+  .corousel1{
+    background-color: #1E3744;
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
+    padding:20px;
+    margin-top:20px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  
+.carouseldiv{
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  max-height: 70%;
+  border-radius: 10px;
+  background-color: white;
+}
+  
+#carousel-1, #carousel-2, #carousel-3 {
+  height: 100%;
+  width:100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+} 
+
+}
+
+
+@media screen and (max-width: 576px) {   
+
+  
+  /* Carousel base class */
+  .carousel {
+    margin-bottom: 4rem;
+  }
+  /* Since positioning the image, we need to help out the caption */
+  .carousel-caption {
+    bottom: 3rem;
+    z-index: 10;
+  }
+  
+  /* Declare heights because of positioning of img element */
+  .carousel-item {
+    height: 55rem;
+  }
+  
+  
+  /* Center align the text within the three columns below the carousel */
+  .marketing .col-lg-4 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  /* rtl:begin:ignore */
+  .marketing .col-lg-4 p {
+    margin-right: .75rem;
+    margin-left: .75rem;
+  }
+
+
+  .featurette-divider {
+    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+  }
+  
+  /* rtl:begin:remove */
+  .featurette-heading {
+    letter-spacing: -.05rem;
+  }
+
+  #carousel-1{
+    	background: url("/images/lazada_ssmob_proceed_to_checkout.jpg") no-repeat center;
+    } 
+
+    #carousel-2{
+    	background: url("/images/lazada_ssmob_edit_address.jpg") no-repeat center;
+    } 
+
+    #carousel-3{
+    	background: url("/images/lazada_ssmob_proceed_to_checkout.jpg") no-repeat center;
+    } 
+
+    
+  .carousel-item {
+    position: relative; /* Ensure positioning context */
+  }
+  
+  .carousel-caption {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px; /* Adjust the height as needed */
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    padding: 1rem;
+    overflow: auto; /* Enable scrolling if the text exceeds the height */
+  }
+  
+  .carousel-caption h2,
+  .carousel-caption p {
+    color: #FFF;
+  }
+  
+  
+  .corousel1{
+    background-color: #1E3744;
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
+    padding:20px;
+    margin-top:20px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  
+.carouseldiv{
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  max-height: 70%;
+  border-radius: 10px;
+  background-color: white;
+}
+  
+#carousel-1, #carousel-2, #carousel-3 {
+  height: 100%;
+  width:100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+} 
+
+
+}
+

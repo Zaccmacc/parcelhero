@@ -1,0 +1,143 @@
+<%- include("head") -%>
+
+<body>
+
+
+<%- include("navbar") -%>
+
+
+
+<!-- HERO SECTION-->
+  <section id="title" class="gradientBackground">
+
+    <div class="container-fluid">
+      <div class="row ">
+        <div class="col-xl-6 col-fluid  heroColumn ">
+          <div class="container heroContainer"> <!-- Text and dowload -->
+            <div class="row herotext">
+              <h1 class="display-5 fw-bold text-body-emphesis 1h-1 mb=3">Order online from Lazada Malaysia, collect in Brunei.
+            </div>
+            <div class="row">
+              <div class="col-xl-6 col-fluid"> <!-- left button -->
+              <form action="/miricollect">
+                <input type="submit" class="btn btn-light btnGetStarted" value="Collect in Miri"></button>
+                </form>
+              </div>
+              <div class="col-xl-6 col-fluid"> <!-- left button -->
+                <form action="/bruneicollect">
+                  <input type="submit" class="btn btn-light btnGetStarted" value="Collect in Jerudong"></button>
+                  </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-xl-6 col-12"> <img class="imgHero" src="./images/City Seamless Background Glow.png" /></div> <!-- right photo -->
+
+
+      </div>
+
+    </div>
+
+    </div>
+
+
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+
+    <div class="container px-4 py-5" id="featured-3">
+      <h2 class="pb-2">Three steps to order online.</h2>
+      <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="feature col">
+          <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+          <span>1</span>
+          </div>
+          <h3 class="fs-2">Order from Lazada.</h3>
+          <p>Enter ParcelHero's Miri address when purchasing your item from Lazada.</p>
+        </div>
+        <div class="feature col">
+          <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+          <span>2</span>
+          </div>
+          <h3 class="fs-2">Register your order.</h3>
+          <p>Inform us about the item you ordered by following the registration process on this website.</p>
+        </div>
+        <div class="feature col">
+          <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+          <span>3</span>
+          </div>
+          <h3 class="fs-2">Collect your order.</h3>
+          <p>After reaching our processing center in Miri, you can collect your order from one of our collection hubs.</p>
+        </div>
+      </div>
+    </div>
+
+
+
+  </section>
+
+
+  <section id="pricing">
+
+    <div class="gradientBackground">
+      <div class="container px-4 py-5 mx-auto">
+    
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <h1 class="display-5 fw-bold text-body-emphesis 1h-1 mb=3">Pricing</h1>
+      <p>Payment options include cash on collection, debit/credit card, paypal, online banking.</p>
+    </div>
+
+      <div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">Collect in Miri</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title"><span style="font-size: large;">BND </span>5 <br> <span style="font-size: large;" >RM </span>15</h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Collect near E-Mart Tudan</li>
+              </ul>
+
+              <form action="/miricollect">
+              <input type="submit" class="w-100 btn btn-lg btnGetStarted" value="Get Started"></button>
+              </form>
+            
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">Collect In Brunei</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title"><span style="font-size: large;">BND </span>5 <span style="font-size: large;" >+ Tax </span><br> <span style="font-size: large;" >RM </span>15 <span style="font-size: large;" >+ Tax </span></h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Import duty applies</li>
+                <li>Collect from Jerudong</li>
+              </ul>
+              <form action="/bruneicollect">
+                <input type="submit" class="w-100 btn btn-lg btnGetStarted" value="Get Started"></button>
+                </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  
+    </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section id="testimonial"></section>
+  <!-- Pricing -->
+  
+  <!-- Footer -->
+  <section id="footer"></section>
+
+  <%- include("footer") -%>
