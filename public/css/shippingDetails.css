@@ -1,0 +1,32 @@
+.inptShippingDetails{
+    width: 100%;
+    background-color: #1E3744;
+    color: white;
+}
+
+.shippingCard{
+    background-color: #63B7E0;
+}
+
+.flex-container {
+	display: flex;
+}
+
+.address-container{
+    padding: 5px;
+}
+
+.shippingFlex{
+	flex: 1;
+    padding: 5px;
+}
+
+.shippingTitle{
+text-align: center;
+}
+
+.inptRegister>input{
+    width: 100%;
+}
+
+

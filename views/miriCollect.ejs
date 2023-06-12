@@ -1,72 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+
 
     
 <%- include("head") -%>
+<link rel="stylesheet" href="floating-labels.css">
+<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/floating-labels/">
 
+<!-- Bootstrap core CSS -->
+<link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="./css/floating-labels.css" rel="stylesheet">
+
+<link rel="stylesheet" href="./css/miriCollect.css">
+
+</head>
+  
 <body>
     
     
 <%- include("navbar") -%>
 
-  <!-- Features -->
-  <section id="features">
+<section>
 
 
-<div class="carousel-container">
-    <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel" data-bs-theme="light">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" aria-label="Slide 3" class="active" aria-current="true"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" class="" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 2" class=""></button>
-    </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="container corousel1">
-          <!-- <img class="carouselimg" src="/images/lazada_ssmob_proceed_to_checkout.png"/> -->
+  <div class="album py-5">
+    <h2 class="shippingTitle pb-5">How to use Parcel Hero</h2>
 
-          <div class="carouseldiv main-img" id="carousel-1"></div>
+    <div class="container">
 
-
-
-          <div class="carousel-caption text-start">
-            <h2>Step 1: Proceed to lazada checkout</h2>
-            <p class="opacity-75">Add items to your basket, proceed to checkout.</p>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="/images/add_shipping_address.png" width="100%" focusable="false">
+            <div class="instruction-card card-body">
+              <p class="text-body-primary">Use Parcel Hero Shipping Info</p>
+              <p class="text-body-secondary">Select your items on your favorite E-Commerce website, checkout, and edit the shipping information shown below.</p>              <div class="d-flex justify-content-between align-items-center">
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="carousel-item">
-        <div class="container corousel1">
-          <div class="carouseldiv main-img" id="carousel-2"></div>
-          <div class="carousel-caption text-start">
-            <h2>Step 2: Edit the address and order.</h2>
-            <p>Use Parcel Hero's shipping address and phone number then place the order.</p>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="/images/place_order.png" width="100%" focusable="false">
+            <div class="instruction-card card-body">
+              <p class="text-body-primary">Order Your Item Online</p>
+              <p class="text-body-secondary">Place your order. The item will then be received at our warehouse in Miri where it will be dispatched to your prefered collection location.</p>              <div class="d-flex justify-content-between align-items-center">
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="carousel-item">
-        <div class="container corousel1">
-          <div class="carouseldiv main-img" id="carousel-3"></div>
-          <div class="carousel-caption text-start">
-            <h2>Step 3: Register your order here.</h2>
-            <p>Let us know about your order by registering below.</p>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="/images/parcelhero_register.png" width="100%" focusable="false">
+            <div class="instruction-card card-body">
+              <p class="text-body-primary">Register on ParcelHero</p>
+              <p class="text-body-secondary">After completing registration and payment on Parcel Hero's website, you will be informed by WhatsApp when your order is ready to collect.</p>
+              <div class="d-flex justify-content-between align-items-center">
+
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-</div>
 
-  </section>
+</section>
 
+
+
+  <%- include("shippingDetails") -%>
+
+    
+    
+  <%- include("registerOrder") -%>
+
+  <br><br><br><br><br><br><br><br>
 </body>
 
 <%- include("footer") -%>

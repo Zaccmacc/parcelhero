@@ -1,0 +1,256 @@
+<%- include("head") -%>
+
+<link rel="stylesheet" href="./css/success.css">
+
+</head>
+  
+<body>
+<%- include("navbar") -%>
+
+<div class="container mt-5 mb-5">
+
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card">
+
+
+                    <div class="text-left logo p-2 px-5">
+
+                        <a class="navbar-brand" href="#" style="font-size: xx-large;"><span class="logoStart">Parcel</span><span class="logoEnd">Hero</span></a>
+                        
+
+                    </div>
+
+                    <div class="invoice p-5">
+                        <h5>Your order is confirmed!</h5>
+                        <span>You order has been successfully processed. We will get in touch with you on WhatsApp. </span>
+
+                        <div class="payment border-top mt-3 mb-3 border-bottom table-responsive">
+
+                            <table class="table table-borderless">
+                                
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Order Date</span>
+                                            <span><%= moment.unix(SUCCESSFUL_ORDER.createdUnixTimestamp).format("DD/MM/YYYY") %></span>
+                                                
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Order No.</span>
+                                            <span><%= SUCCESSFUL_ORDER.orderNumber %></span>
+                                                
+                                            </div>
+                                        </td>
+
+
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Collection Point</span>
+                                            <span><%= SUCCESSFUL_ORDER.collectionPoint %></span>
+                                                
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Name</span>
+                                                <span><%= SUCCESSFUL_ORDER.fullName %></span>
+                                                
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Email</span>
+                                                <span><%= SUCCESSFUL_ORDER.customerEmail %></span>
+                                                
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Phone Number</span>
+                                                <span><%= SUCCESSFUL_ORDER.phoneNumber %></span>
+                                                
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Order Website</span>
+                                            <span><%= SUCCESSFUL_ORDER.orderWebsite %></span>
+                                                
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="py-2">
+
+                                                <span class="d-block text-muted">Goods Catagory</span>
+                                            <span><%= SUCCESSFUL_ORDER.goodsCatagory %></span>
+                                                
+                                            </div>
+                                        </td>
+
+                                      
+                                    </tr>
+                                    <tr>  <td>
+                                        <div class="py-2">
+
+                                            <span class="d-block text-muted">Shipping Agent</span>
+                                        <span><%= SUCCESSFUL_ORDER.shippingAgent %></span>
+                                            
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="py-2">
+
+                                            <span class="d-block text-muted">Tracking Number</span>
+                                        <span><%= SUCCESSFUL_ORDER.trackingNumber %></span>
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+
+
+
+
+                            
+                        </div>
+
+
+
+
+                            <div class="product border-bottom table-responsive">
+
+                                <table class="table table-borderless">
+
+                                <tbody>
+                                    <tr>
+
+                                    <td width="60%">
+                                        <span class="font-weight-bold">Parcel Hero Service Fee</span>
+                                    </td>
+                                    <td width="40%">
+                                        <div class="text-right">
+                                            <span class="font-weight-bold">BND <%= SUCCESSFUL_ORDER.serviceFeeBndCents / 100 %></span>
+                                        </div>
+                                    </td>
+                                    </tr>
+
+                                    <tr>
+
+                                        <td width="60%">
+                                            <span class="font-weight-bold">Import Tax</span>
+                                        </td>
+                                        <td width="40%">
+                                            <div class="text-right">
+                                                <span class="font-weight-bold">BND <%= SUCCESSFUL_ORDER.importTaxBndCents / 100 %></span>
+                                            </div>
+                                        </td>
+                                        </tr>
+                                </tbody> 
+                                    
+                                </table>
+                                
+
+
+                            </div>
+
+
+
+                            <div class="row d-flex justify-content-end">
+
+                                <div class="col-md-5">
+
+                                    <table class="table table-borderless">
+
+                                        <tbody class="totals">
+
+                                            <tr>
+                                                <td>
+                                                    <div class="text-left">
+
+                                                        <span class="text-muted">Subtotal</span>
+                                                        
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-right">
+                                                        <span>BND <%= (SUCCESSFUL_ORDER.importTaxBndCents+SUCCESSFUL_ORDER.serviceFeeBndCents) / 100 %></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                            
+                                        </tbody>
+                                        
+                                    </table>
+                                    
+                                </div>
+                                
+
+
+                            </div>
+
+
+                            <p>We will be sending a confirmation email.</p>
+                            <p class="font-weight-bold mb-0">Thanks for shopping with us!</p>
+                            <span>Parcel Hero Team</span>
+
+
+
+                        
+
+                    </div>
+
+
+                    <div class="d-flex justify-content-between footer p-3">
+
+                        <span>Need Help? contact us on +60178941403</span>
+                         <span><%= moment.unix(SUCCESSFUL_ORDER.createdUnixTimestamp).format("DD/MM/YYYY") %></span>
+                        
+                    </div>
+
+
+
+        
+    </div>
+            
+        </div>
+        
+    </div>
+    
+</div>
+
+<%- include("footer") -%>

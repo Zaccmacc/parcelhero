@@ -1,5 +1,4 @@
 
-
 @keyframes gradient-animation {
   0% {
     background-position: 0% 50%;
@@ -66,6 +65,7 @@ a {
   font-weight: 400 ;
   font-size: larger;
   min-width: 250px;
+  border-radius: 5px;
 }
 
 .getStarted:hover{
@@ -179,218 +179,23 @@ color: whitesmoke
 }
 
 
+.album{
+  background-color: #4987A6;
+}
 
+.instruction-card{
+  background-color: whitesmoke;
+}
 
+.card>img{
+border-radius: 5px;
+}
+
+.shippingTitle{
+  display: block;
+}
    
-@media screen and (min-width: 577px) {      
-  #carousel-1{      
-    	background-image: url("/images/lazada_ss_proceed_to_checkout.png");
-    } 
 
-    #carousel-2{      
-    	background-image: url("/images/lazada_ss_edit_address.png");
-    } 
-
-    #carousel-3{      
-    	background-image: url("/images/lazada_ss_proceed_to_checkout.png");
-    } 
-
-
-  /* Carousel base class */
-  .carousel {
-    margin-bottom: 4rem;
-  }
-  /* Since positioning the image, we need to help out the caption */
-  .carousel-caption {
-    bottom: 3rem;
-    z-index: 10;
-  }
-  
-  /* Declare heights because of positioning of img element */
-  .carousel-item {
-    height: 32rem;
-  }
-  
-  
-  .marketing .col-lg-4 {
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  /* rtl:begin:ignore */
-  .marketing .col-lg-4 p {
-    margin-right: .75rem;
-    margin-left: .75rem;
-  }
-
-  
-  .featurette-divider {
-    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
-  }
-
-  .featurette-heading {
-    letter-spacing: -.05rem;
-  }
-  
-
-
-    
-  .carousel-item {
-    position: relative; /* Ensure positioning context */
-  }
-  
-  .carousel-caption {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 200px; /* Adjust the height as needed */
-    /* background-color: rgba(0, 0, 0, 0.5); */
-    padding: 1rem;
-    overflow: auto; /* Enable scrolling if the text exceeds the height */
-  }
-  
-  .carousel-caption h2,
-  .carousel-caption p {
-    color: #FFF;
-  }
-  
-  
-  .corousel1{
-    background-color: #1E3744;
-    height: 100%;
-    width: 100%;
-    max-width: 800px;
-    padding:20px;
-    margin-top:20px;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  
-.carouseldiv{
-  display:block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
-  max-height: 70%;
-  border-radius: 10px;
-  background-color: white;
+.success-brand{
+  color: #146C94;
 }
-  
-#carousel-1, #carousel-2, #carousel-3 {
-  height: 100%;
-  width:100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-
-} 
-
-}
-
-
-@media screen and (max-width: 576px) {   
-
-  
-  /* Carousel base class */
-  .carousel {
-    margin-bottom: 4rem;
-  }
-  /* Since positioning the image, we need to help out the caption */
-  .carousel-caption {
-    bottom: 3rem;
-    z-index: 10;
-  }
-  
-  /* Declare heights because of positioning of img element */
-  .carousel-item {
-    height: 55rem;
-  }
-  
-  
-  /* Center align the text within the three columns below the carousel */
-  .marketing .col-lg-4 {
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  /* rtl:begin:ignore */
-  .marketing .col-lg-4 p {
-    margin-right: .75rem;
-    margin-left: .75rem;
-  }
-
-
-  .featurette-divider {
-    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
-  }
-  
-  /* rtl:begin:remove */
-  .featurette-heading {
-    letter-spacing: -.05rem;
-  }
-
-  #carousel-1{
-    	background: url("/images/lazada_ssmob_proceed_to_checkout.jpg") no-repeat center;
-    } 
-
-    #carousel-2{
-    	background: url("/images/lazada_ssmob_edit_address.jpg") no-repeat center;
-    } 
-
-    #carousel-3{
-    	background: url("/images/lazada_ssmob_proceed_to_checkout.jpg") no-repeat center;
-    } 
-
-    
-  .carousel-item {
-    position: relative; /* Ensure positioning context */
-  }
-  
-  .carousel-caption {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 200px; /* Adjust the height as needed */
-    /* background-color: rgba(0, 0, 0, 0.5); */
-    padding: 1rem;
-    overflow: auto; /* Enable scrolling if the text exceeds the height */
-  }
-  
-  .carousel-caption h2,
-  .carousel-caption p {
-    color: #FFF;
-  }
-  
-  
-  .corousel1{
-    background-color: #1E3744;
-    height: 100%;
-    width: 100%;
-    max-width: 800px;
-    padding:20px;
-    margin-top:20px;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  
-.carouseldiv{
-  display:block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
-  max-height: 70%;
-  border-radius: 10px;
-  background-color: white;
-}
-  
-#carousel-1, #carousel-2, #carousel-3 {
-  height: 100%;
-  width:100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-} 
-
-
-}
-

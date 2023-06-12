@@ -1,0 +1,134 @@
+<link rel="stylesheet" href="./css/registerOrder.css">
+
+<div class="container">
+  <div class="card">
+  <h2 class="shippingTitle p-3">Register with Parcel Hero</h2>
+
+  <form action="/registerOrder" method="post">
+    <div class="container">
+
+      
+      
+      <div class="col-12">
+        <p class="registerTitle pt-4">Collection Point</p>
+      </div>
+      <div class="row">
+        <div class="col-6 radioLocation">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="radioMiriCollect" value="0" checked>
+          <label class="form-check-label" for="radioMiriCollect">
+            Collect in Miri
+          </label>
+        </div>
+        <div class="col-6 radioLocation">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="radioBruneiCollect" value="1">
+          <label class="form-check-label" for="radioBruneiCollect" >
+            Collect in Jerudong
+          </label>
+        </div>
+      
+        <div class="col-12">
+          <p class="registerTitle pt-4">Receiver Information</p>
+        </div>
+        <div class="col-6 inptRegister">
+          <label for="html">Full Name</label><br>
+          <input class="" type="text" value="" name="inptFullName" id="" required>
+        </div>
+        <div class="col-6 inptRegister">
+          <label for="html">Whatsapp Phone Number</label><br>
+          <input class="" type="text" value="+673" name="inptPhoneNumber" id="" required>
+        </div>
+      </div>
+
+
+      <div class="col-12">
+        <p class="registerTitle pt-4">Order Information</p>
+      </div>
+
+      <div class="row">
+      <div class="col-6 inptRegister">
+        <label for="html">Order Website</label><br>
+        <input class="" type="text" value="Lazada" name="inptOrderWebsite" id="" required>
+      </div>
+      <div class="col-6 inptRegister">
+        <label for="html">Order Number</label><br>
+        <input class="" type="text" value="" name="inptOrderNumber" id="" required>
+      </div>
+    
+
+      <div class="col-6 inptRegister hideForMiri invisible" id="goodsCatagory" required>
+        <label for="html">Goods Catagory</label><br>
+        <select name="slctGoodsCatagory" id="slctGoodsCatagory">
+          <option value="Tyre">Tyre</option>
+          <option value="Auto Parts">Auto Parts</option>
+          <option value="Industrial Machine">Industrial Machine</option>
+          <option value="Leather and Fur Products">Leather and Fur Products</option>
+          <option value="Hair Products">Hair Products</option>
+          <option value="Video Games">Video Games</option>
+          <option value="Precious Metals">Precious Metals</option>
+          <option value="Jewellery">Jewellery</option>
+          <option value="Candy">Candy</option>
+          <option value="MSG">MSG</option>
+          <option value="Instant Coffee & Tea">Instant Coffee & Tea</option>
+          <option value="Mobile Phone">Mobile Phone</option>
+          <option value="Digital Camera">Digital Camera</option>
+          <option value="Electrical Goods">Electrical Goods</option>
+          <option value="Plastic Product">Plastic Product</option>
+          <option value="Rubber Product">Rubber Product</option>
+          <option value="Watch or Accessories">Watch or Accessories</option>
+          <option value="Cosmetics, Beauty and Perfume Product">Cosmetics, Beauty and Perfume Product</option>
+          <option value="Textile Carpet and Flooring">Textile Carpet and Flooring</option>
+          <option value="Photography Products">Photography Products</option>
+          <option value="Hat, Helmet, Headgear">Hat, Helmet, Headgear</option>
+          <option value="Lighter">Lighter</option>
+          <option value="Decorative Hair Pin">Decorative Hair Pin</option>
+          <option value="Other">Other</option>
+
+
+        </select>
+
+      </div>
+      
+      <div class="col-6 inptRegister hideForMiri invisible">
+        <label for="html">Order Invoice Value (RM)</label><br>
+        <input id="orderPrice" class="" type="number" min="0.00" step="0.01" value="0.00" name="inptInvoiceValueMyr" id="" required>
+      </div>
+
+      
+      <div class="col-12">
+        <p class="registerTitle pt-4">Shipment Information</p>
+      </div>
+
+        <div class="col-6 inptRegister">
+          <label for="html">Shipping Agent (eg. J&T, DHL, NinjaVan)</label><br>
+          <input class="" type="text" value="+673" name="inptShippingAgent" id="" required>
+        </div>
+      
+        <div class="col-6 inptRegister">
+          <label for="html">Tracking Number</label><br>
+          <input class="" type="text" value="+673" name="inptTrackingNumber" id="" required>
+        </div>
+
+    </div>
+    <div class="text-center">    <button class="btnGetStarted" type="submit">Register My Order</button>
+    </div>
+
+    </form>
+
+</div>
+</div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!-- <script src="~/formatPrice.js"></script> -->
+<script>
+$('#radioMiriCollect').change(function() {
+  $(".hideForMiri").addClass("invisible");
+
+
+});
+$('#radioBruneiCollect').change(function() {
+  $(".hideForMiri").removeClass("invisible");
+
+});
+</script>
