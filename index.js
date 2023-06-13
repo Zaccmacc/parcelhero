@@ -169,37 +169,12 @@ app.get("/bruneicollect", function(req,res){
     
 });
 
-app.post("/registerOrder", upload.single("pdfInvoice"), async (req,res) =>{
+app.post("/registerOrderJerudong", upload.single("pdfInvoice"), async (req,res) =>{
   // app.post("/registerOrder", async (req,res) =>{
     const pdfPath = __dirname+"/"+req.file.path;
     console.log("pdfPath:  " + pdfPath);
 
-    const taxRates = new Map([
-        ["Tyre", 0.05],
-        ["Auto Parts", 0.05],
-        ["Industrial Machine", 0.025],
-        ["Leather and Fur Products",0.05],
-        ["Hair Products",0.05],
-        ["Video Games", 0.20],
-        ["Precious Metals", 0.15],
-        ["Jewellery", 0.15],
-        ["Candy", 0.03],
-        ["MSG", 0.30],
-        ["Instant Coffee & Tea",0.05],
-        ["Mobile Phone", 0.10],
-        ["Digital Camera",0.10],
-        ["Electrical Goods",0.05],
-        ["Plastic Product",0.03],
-        ["Rubber Product",0.05],
-        ["Watch or Accessories",0.10],
-        ["Cosmetics, Beauty and Perfume Product",0.05],
-        ["Textile Carpet and Flooring",0.05],
-        ["Photography Products",0.05],
-        ["Hat, Helmet, Headgear",0.10],
-        ["Lighter",0.10],
-        ["Decorative Hair Pin",0.10],
-        ["Other",0.10]
-      ]);
+    const taxRates = getTaxRates();
 
     let NEW_ORDER = {
         fullName : JSON.stringify(req.body.inptFullName).replace(/[^a-zA-Z0-9+ ]/g, ""),
@@ -217,50 +192,7 @@ app.post("/registerOrder", upload.single("pdfInvoice"), async (req,res) =>{
 
     }
 
-
-
-    
-    if(req.body.flexRadioDefault==0){ //collect in Miri
-
-      NEW_ORDER['collectionPoint'] = 'Miri';
-      NEW_ORDER['serviceFeeBndCents'] = 300;
-      NEW_ORDER['importTaxBndCents'] = 0;
-      const JSON_NEW_ORDER = JSON.stringify(NEW_ORDER);
-
-        const myProduct = await stripe.products.create({
-            name: 'One Package, Collect in Miri',
-            description: 'PLEASE CONFIRM THE FOLLOWING DETAILS: \n' +
-            '| Full Name: ' + NEW_ORDER.fullName +'\n' +
-            '| Phone Number: ' + NEW_ORDER.phoneNumber +'\n' +
-            '| Order Website: '+ NEW_ORDER.orderWebsite +'\n' +
-            '| Order Number: ' + NEW_ORDER.orderNumber +'\n' +
-            '| Shipping Agent: ' + NEW_ORDER.shippingAgent +'\n' +
-            '| Tracking Number: ' + NEW_ORDER.trackingNumber 
-        });
-
-        const myPrice =  await stripe.prices.create({
-         unit_amount: 300,
-         currency: 'bnd',
-         product: myProduct.id,
-        });
-
-        const session = await stripe.checkout.sessions.create({
-            line_items: [
-              {
-                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                price: myPrice.id,
-                quantity: 1,
-              },
-            ],
-            mode: 'payment',
-            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${pdfPath}`,
-            cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
-          });
-        //   console.log(res);
-        res.redirect(303, session.url);
-
-    } else { //collect in Brunei
-
+      //Collect in Brunei
       NEW_ORDER['collectionPoint'] = 'Jerudong';
       NEW_ORDER['serviceFeeBndCents'] = 500;
       NEW_ORDER['importTaxBndCents']= Math.round(100*taxRates.get(NEW_ORDER.goodsCatagory)*NEW_ORDER.invoiceValueMyr/NEW_ORDER.exchangeRate);
@@ -318,7 +250,70 @@ app.post("/registerOrder", upload.single("pdfInvoice"), async (req,res) =>{
         //   console.log(res);
         res.redirect(303, session.url);
 
+    
+
+});
+
+
+app.post("/registerOrderMiri", async (req,res) =>{
+  // app.post("/registerOrder", async (req,res) =>{
+
+    const taxRates = getTaxRates();
+
+    let NEW_ORDER = {
+        fullName : JSON.stringify(req.body.inptFullName).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        phoneNumber : JSON.stringify(req.body.inptPhoneNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        orderWebsite: JSON.stringify(req.body.inptOrderWebsite).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        orderNumber: JSON.stringify(req.body.inptOrderNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        goodsCatagory: JSON.stringify(req.body.slctGoodsCatagory).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        invoiceValueMyr: 0,
+        shippingAgent: JSON.stringify(req.body.inptShippingAgent).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        trackingNumber: JSON.stringify(req.body.inptTrackingNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        importTaxRate: taxRates.get(req.body.slctGoodsCatagory),
+        exchangeRate: 3.2,  //EXCHANGE RATE HERE
+        collectionPoint: "Default",
+        serviceFeeBndCents: 0
+
     }
+
+    //collect in Miri
+
+      NEW_ORDER['collectionPoint'] = 'Miri';
+      NEW_ORDER['serviceFeeBndCents'] = 300;
+      NEW_ORDER['importTaxBndCents'] = 0;
+      const JSON_NEW_ORDER = JSON.stringify(NEW_ORDER);
+
+        const myProduct = await stripe.products.create({
+            name: 'One Package, Collect in Miri',
+            description: 'PLEASE CONFIRM THE FOLLOWING DETAILS: \n' +
+            '| Full Name: ' + NEW_ORDER.fullName +'\n' +
+            '| Phone Number: ' + NEW_ORDER.phoneNumber +'\n' +
+            '| Order Website: '+ NEW_ORDER.orderWebsite +'\n' +
+            '| Order Number: ' + NEW_ORDER.orderNumber +'\n' +
+            '| Shipping Agent: ' + NEW_ORDER.shippingAgent +'\n' +
+            '| Tracking Number: ' + NEW_ORDER.trackingNumber 
+        });
+
+        const myPrice =  await stripe.prices.create({
+         unit_amount: 300,
+         currency: 'bnd',
+         product: myProduct.id,
+        });
+
+        const session = await stripe.checkout.sessions.create({
+            line_items: [
+              {
+                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                price: myPrice.id,
+                quantity: 1,
+              },
+            ],
+            mode: 'payment',
+            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${pdfPath}`,
+            cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
+          });
+        //   console.log(res);
+        res.redirect(303, session.url);
 
 });
 
@@ -332,6 +327,38 @@ app.listen(process.env.PORT || 3000, function(){
 const successEmail = function(SUCCESSFUL_ORDER){
   let htmlText = "<p>This is a test</p>"
   return htmlText;
+}
+
+
+function getTaxRates(){
+  const taxRates = new Map([
+    ["Tyre", 0.05],
+    ["Auto Parts", 0.05],
+    ["Industrial Machine", 0.025],
+    ["Leather and Fur Products",0.05],
+    ["Hair Products",0.05],
+    ["Video Games", 0.20],
+    ["Precious Metals", 0.15],
+    ["Jewellery", 0.15],
+    ["Candy", 0.03],
+    ["MSG", 0.30],
+    ["Instant Coffee & Tea",0.05],
+    ["Mobile Phone", 0.10],
+    ["Digital Camera",0.10],
+    ["Electrical Goods",0.05],
+    ["Plastic Product",0.03],
+    ["Rubber Product",0.05],
+    ["Watch or Accessories",0.10],
+    ["Cosmetics, Beauty and Perfume Product",0.05],
+    ["Textile Carpet and Flooring",0.05],
+    ["Photography Products",0.05],
+    ["Hat, Helmet, Headgear",0.10],
+    ["Lighter",0.10],
+    ["Decorative Hair Pin",0.10],
+    ["Other",0.10]
+  ]);
+
+  return taxRates;
 }
 //
 
