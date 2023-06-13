@@ -111,7 +111,7 @@
         <div class="text-center inptRegister col-6 mx-auto" >           <br>
           <label for="html">Upload Order Invoice PDF</label>
           <br>
-          <input id='files' accept="application/pdf" type="file" name="pdfInvoice" required>
+          <input id='files' accept="application/pdf" type="file" id="invoiceUploadForm" name="pdfInvoice" required>
         </div>
         <div class="text-center">    <button class="btnGetStarted" type="submit">Register My Order</button>
         </div>
@@ -129,6 +129,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- <script src="~/formatPrice.js"></script> -->
 <script>
+$(document).ready(function(){
+
+
 $('#radioMiriCollect').change(function() {
   $(".hideForMiri").addClass("invisible");
 
@@ -136,6 +139,9 @@ $('#radioMiriCollect').change(function() {
 });
 $('#radioBruneiCollect').change(function() {
   $(".hideForMiri").removeClass("invisible");
+
+});
+
 
 });
 </script>

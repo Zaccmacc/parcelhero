@@ -18,8 +18,11 @@ app.use(express.static(__dirname+"/public")); //Static file where CSS and Images
 
 const YOUR_DOMAIN = 'http://localhost:3000';
 
-const upload = multer(getMulterParams()).single("myPdfInvoice");
-
+// const upload = multer(getMulterParams()).single("myPdfInvoice");
+const upload = multer({
+  dest: "uploads/",
+  limits : {fileSize : 10000000},
+});
 
 app.get("/", function(req,res){
 
@@ -70,7 +73,6 @@ app.get("/paymentSuccess", async (req,res) =>{
 
       
 
-      console.log(SUCCESSFUL_ORDER);
       res.render('success', {SUCCESSFUL_ORDER:SUCCESSFUL_ORDER, moment:moment}); //send params here.
 
       const transporter = nodemailer.createTransport({
@@ -81,15 +83,17 @@ app.get("/paymentSuccess", async (req,res) =>{
           pass: 'parcelheroparcelhero'
         }
       })
+
+      console.log( "query pdf path: " + req.query.pdf_path);
       
       var mailOptionsCustomer = {
         from: 'info@parcelhero.my',
         to: SUCCESSFUL_ORDER.customerEmail,
-        subject: 'Sending Email using Node.js',
+        subject: 'Parcel Hero Order',
         html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment: moment }),
         attachments: [{
           filename: 'customer_invoice.pdf',
-          path: req.query.pdfPath,
+          path: req.query.pdf_path,
           contentType: 'application/pdf'
         }],   
       };
@@ -167,18 +171,8 @@ app.get("/bruneicollect", function(req,res){
 
 app.post("/registerOrder", upload.single("pdfInvoice"), async (req,res) =>{
   // app.post("/registerOrder", async (req,res) =>{
-
-    upload(req, res, (err) => {
-      if(err){
-          res.send(err)
-          // This will display the error message to the user
-      }
-      else{
-          res.send("File Uploaded Successfully")
-      // This shows the file has beem successfully uploaded
-      // The image will be found in the public folder
-          }
-  });
+    const pdfPath = __dirname+"/"+req.file.path;
+    console.log("pdfPath:  " + pdfPath);
 
     const taxRates = new Map([
         ["Tyre", 0.05],
@@ -325,8 +319,7 @@ app.post("/registerOrder", upload.single("pdfInvoice"), async (req,res) =>{
         res.redirect(303, session.url);
 
     }
-    console.log(NEW_ORDER);
-    console.log(req.body.flexRadioDefault);
+
 });
 
 
@@ -343,30 +336,30 @@ const successEmail = function(SUCCESSFUL_ORDER){
 //
 
 
-function getMulterParams(){
-  return {
-    storage: multer.diskStorage({
-        destination: "/upload/images",  // Storage location
-        filename: (req, res, (cb) => {
-            cb(null, Date.now() + path.extname(file.originalname)) // return a unique file name for every file              
-        })
-    }),
+// function getMulterParams(){
+//   return {
+//     storage: multer.diskStorage({
+//         destination: "/upload/images",  // Storage location
+//         filename: (req, res, (cb) => {
+//             cb(null, Date.now() + path.extname(file.originalname)) // return a unique file name for every file              
+//         })
+//     }),
   
-    limits: {fileSize: 20000000},   // This limits file size to 2 million bytes(2mb)
+//     limits: {fileSize: 20000000},   // This limits file size to 2 million bytes(2mb)
   
-    fileFilter: (req, file, cb) => {
-        const validFileTypes = /png/ // Create regex to match jpg and png
+//     fileFilter: (req, file, cb) => {
+//         const validFileTypes = /png/ // Create regex to match jpg and png
   
-        // Do the regex match to check if file extenxion match
-        const extname = validFileTypes.test(path.extname(file.originalname).toLowerCase())
+//         // Do the regex match to check if file extenxion match
+//         const extname = validFileTypes.test(path.extname(file.originalname).toLowerCase())
   
-        if(extname === true){
-            // Return true and file is saved
-             return cb(null, true)
-        }else{
-            // Return error message if file extension does not match
-            return cb("Error: Images Only!")
-            }
-        }
-  }
-}
+//         if(extname === true){
+//             // Return true and file is saved
+//              return cb(null, true)
+//         }else{
+//             // Return error message if file extension does not match
+//             return cb("Error: Images Only!")
+//             }
+//         }
+//   }
+// }
