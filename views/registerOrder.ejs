@@ -4,7 +4,7 @@
   <div class="card">
   <h2 class="shippingTitle p-3">Register with Parcel Hero</h2>
 
-  <form action="/registerOrder" method="post">
+  <form action="/registerOrder" enctype="multipart/form-data" method="post">
     <div class="container">
 
       
@@ -108,9 +108,16 @@
           <input class="" type="text" value="+673" name="inptTrackingNumber" id="" required>
         </div>
 
+        <div class="text-center inptRegister col-6 mx-auto" >           <br>
+          <label for="html">Upload Order Invoice PDF</label>
+          <br>
+          <input id='files' accept="application/pdf" type="file" name="pdfInvoice" required>
+        </div>
+        <div class="text-center">    <button class="btnGetStarted" type="submit">Register My Order</button>
+        </div>
+
     </div>
-    <div class="text-center">    <button class="btnGetStarted" type="submit">Register My Order</button>
-    </div>
+
 
     </form>
 

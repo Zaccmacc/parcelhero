@@ -4,6 +4,11 @@ const https = require("https");
 const mongoose = require('mongoose');
 const stripe = require('stripe')('sk_test_9CFc5MnuS0BuLis2WR3vhMjA');
 const moment = require('moment');
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const ejs = require('ejs');
+const multer = require("multer");
+
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -13,9 +18,11 @@ app.use(express.static(__dirname+"/public")); //Static file where CSS and Images
 
 const YOUR_DOMAIN = 'http://localhost:3000';
 
+const upload = multer(getMulterParams()).single("myPdfInvoice");
+
+
 app.get("/", function(req,res){
 
-  // res.render('success', {}) //send params here.
 
    res.render('index', {}) //send params here.
     
@@ -24,13 +31,15 @@ app.get("/", function(req,res){
 app.get("/paymentSuccess", async (req,res) =>{
 
   
+
+  
   
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
     if(session.payment_status==='paid'){
       
       const sessionData =  JSON.parse(req.query.order_id)
 
-      const SUCCESSFUL_ORDER = {
+      let SUCCESSFUL_ORDER = {
         fullName : sessionData.fullName,
         phoneNumber : sessionData.phoneNumber,
         orderWebsite: sessionData.orderWebsite,
@@ -49,12 +58,88 @@ app.get("/paymentSuccess", async (req,res) =>{
         importTaxBndCents: sessionData.importTaxBndCents
       }
 
+      if(SUCCESSFUL_ORDER.collectionPoint=='Miri'){
+        SUCCESSFUL_ORDER.collectionPointAddress1 = 'Parcel Hero'
+        SUCCESSFUL_ORDER.collectionPointAddress2 = 'Lot 1564, Permyjaya Technology Park'
+        SUCCESSFUL_ORDER.collectionPointAddress3 = 'Tudan, 98000, Miri, Sarawak'
+      } else {
+        SUCCESSFUL_ORDER.collectionPointAddress1 = 'Parcel Hero'
+        SUCCESSFUL_ORDER.collectionPointAddress2 = 'Lot 1564, Permyjaya Technology Park'
+        SUCCESSFUL_ORDER.collectionPointAddress3 = 'Tudan, 98000, Miri, Sarawak'
+      }
+
+      
+
       console.log(SUCCESSFUL_ORDER);
-      res.render('success', {SUCCESSFUL_ORDER:SUCCESSFUL_ORDER, moment:moment}) //send params here.
+      res.render('success', {SUCCESSFUL_ORDER:SUCCESSFUL_ORDER, moment:moment}); //send params here.
+
+      const transporter = nodemailer.createTransport({
+        host: 'mail.parcelhero.my',
+        port: '465', // must be 587 for gmail
+        auth: {
+          user: 'info@parcelhero.my',
+          pass: 'parcelheroparcelhero'
+        }
+      })
+      
+      var mailOptionsCustomer = {
+        from: 'info@parcelhero.my',
+        to: SUCCESSFUL_ORDER.customerEmail,
+        subject: 'Sending Email using Node.js',
+        html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment: moment }),
+        attachments: [{
+          filename: 'customer_invoice.pdf',
+          path: req.query.pdfPath,
+          contentType: 'application/pdf'
+        }],   
+      };
+
+
+      //////////// SET THE RECEIVERS ///////////////////
+      // var mailOptionsCompany = {
+      //   from: 'info@parcelhero.my',
+      //   to: 'yasmin@waterworthservices.com',
+      //   subject: 'Sending Email using Node.js',
+      //   html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment:moment })   
+      // };
+
+      // var mailOptionsCompany2 = {
+      //   from: 'info@parcelhero.my',
+      //   to: 'zac@waterworthservices.com',
+      //   subject: 'Sending Email using Node.js',
+      //   html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment:moment })   
+
+      // };
+      /////////////  SET THE RECEIVERS ///////////////
+    
+      // ACTUALLY SENDIN EMAIL. UNCOMMENT TO ENABLE! ///////////
+    transporter.sendMail(mailOptionsCustomer, async function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+    // transporter.sendMail(mailOptionsCompany, async function(error, info){
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('Email sent: ' + info.response);
+    //   }
+    // });
+    
+    // transporter.sendMail(mailOptionsCompany2, async function(error, info){
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('Email sent: ' + info.response);
+    //   }
+    // });
+        // ACTUALLY SENDIN EMAIL. UNCOMMENT TO ENABLE! ///////////
 
 
     }
-    // const customer = await stripe.customers.retrieve(session.customer);
 
 
     
@@ -80,8 +165,20 @@ app.get("/bruneicollect", function(req,res){
     
 });
 
-app.post("/registerOrder", async (req,res) =>{
+app.post("/registerOrder", upload.single("pdfInvoice"), async (req,res) =>{
+  // app.post("/registerOrder", async (req,res) =>{
 
+    upload(req, res, (err) => {
+      if(err){
+          res.send(err)
+          // This will display the error message to the user
+      }
+      else{
+          res.send("File Uploaded Successfully")
+      // This shows the file has beem successfully uploaded
+      // The image will be found in the public folder
+          }
+  });
 
     const taxRates = new Map([
         ["Tyre", 0.05],
@@ -111,14 +208,14 @@ app.post("/registerOrder", async (req,res) =>{
       ]);
 
     let NEW_ORDER = {
-        fullName : req.body.inptFullName,
-        phoneNumber : req.body.inptPhoneNumber,
-        orderWebsite: req.body.inptOrderWebsite,
-        orderNumber: req.body.inptOrderNumber,
-        goodsCatagory: req.body.slctGoodsCatagory,
+        fullName : JSON.stringify(req.body.inptFullName).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        phoneNumber : JSON.stringify(req.body.inptPhoneNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        orderWebsite: JSON.stringify(req.body.inptOrderWebsite).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        orderNumber: JSON.stringify(req.body.inptOrderNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        goodsCatagory: JSON.stringify(req.body.slctGoodsCatagory).replace(/[^a-zA-Z0-9+ ]/g, ""),
         invoiceValueMyr: req.body.inptInvoiceValueMyr,
-        shippingAgent: req.body.inptShippingAgent,
-        trackingNumber: req.body.inptTrackingNumber,
+        shippingAgent: JSON.stringify(req.body.inptShippingAgent).replace(/[^a-zA-Z0-9+ ]/g, ""),
+        trackingNumber: JSON.stringify(req.body.inptTrackingNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
         importTaxRate: taxRates.get(req.body.slctGoodsCatagory),
         exchangeRate: 3.2,  //EXCHANGE RATE HERE
         collectionPoint: "Default",
@@ -162,7 +259,7 @@ app.post("/registerOrder", async (req,res) =>{
               },
             ],
             mode: 'payment',
-            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}`,
+            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${pdfPath}`,
             cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
           });
         //   console.log(res);
@@ -221,7 +318,7 @@ app.post("/registerOrder", async (req,res) =>{
               }
             ],
             mode: 'payment',
-            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}`,
+            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${pdfPath}`,
             cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
           });
         //   console.log(res);
@@ -237,5 +334,39 @@ app.listen(process.env.PORT || 3000, function(){
     console.log("server started on port 3000!");
 });
 
+
+
+const successEmail = function(SUCCESSFUL_ORDER){
+  let htmlText = "<p>This is a test</p>"
+  return htmlText;
+}
 //
 
+
+function getMulterParams(){
+  return {
+    storage: multer.diskStorage({
+        destination: "/upload/images",  // Storage location
+        filename: (req, res, (cb) => {
+            cb(null, Date.now() + path.extname(file.originalname)) // return a unique file name for every file              
+        })
+    }),
+  
+    limits: {fileSize: 20000000},   // This limits file size to 2 million bytes(2mb)
+  
+    fileFilter: (req, file, cb) => {
+        const validFileTypes = /png/ // Create regex to match jpg and png
+  
+        // Do the regex match to check if file extenxion match
+        const extname = validFileTypes.test(path.extname(file.originalname).toLowerCase())
+  
+        if(extname === true){
+            // Return true and file is saved
+             return cb(null, true)
+        }else{
+            // Return error message if file extension does not match
+            return cb("Error: Images Only!")
+            }
+        }
+  }
+}
