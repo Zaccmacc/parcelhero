@@ -303,7 +303,7 @@ const successEmail = function(SUCCESSFUL_ORDER){
 
 
 function getTaxRates(){
-  const taxRates = new Map([
+  const taxRates = new Map([////
     ["Tyre", 0.05],
     ["Auto Parts", 0.05],
     ["Industrial Machine", 0.025],
