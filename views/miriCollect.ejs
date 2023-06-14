@@ -73,11 +73,6 @@
 
   <br><br><br><br><br><br><br><br>
 
-  <h1 id="testHeader">This is a test</h1>
-
-
- 
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <!-- <script src="~/formatPrice.js"></script> -->
   <script>
@@ -88,12 +83,14 @@
     $(".hideDivForMiri").addClass("invisible");
     $(".requiredForJeudong").removeAttr('required');
     $('#registerOrderForm').attr('action', '/registerOrderMiri');
+    $('#registerOrderForm').attr('enctype', 'application/x-www-form-urlencoded');
   });
   
   $('#radioBruneiCollect').change(function() {
     $(".hideDivForMiri").removeClass("invisible");
     $(".requiredForJeudong").attr('required', '');
     $('#registerOrderForm').attr('action', '/registerOrderJerudong');
+    $('#registerOrderForm').attr('enctype', 'multipart/form-data');
   
   });
   

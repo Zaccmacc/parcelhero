@@ -12,7 +12,7 @@ const multer = require("multer");
 
 const app = express();
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true})); //to make bodyParser work.
+app.use(bodyParser.urlencoded({extended: true})); //to make JSON bodyParser work.
 app.use(express.static(__dirname+"/public")); //Static file where CSS and Images go.. files in here will appear in root of html eg.   <link href="css/sign-in.css" rel="stylesheet">
 //html part looks like this  <link href="css/sign-in.css" rel="stylesheet"
 
@@ -28,124 +28,6 @@ app.get("/", function(req,res){
 
 
    res.render('index', {}) //send params here.
-    
-});
-
-app.get("/paymentSuccess", async (req,res) =>{
-
-  
-
-  
-  
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    if(session.payment_status==='paid'){
-      
-      const sessionData =  JSON.parse(req.query.order_id)
-
-      let SUCCESSFUL_ORDER = {
-        fullName : sessionData.fullName,
-        phoneNumber : sessionData.phoneNumber,
-        orderWebsite: sessionData.orderWebsite,
-        orderNumber: sessionData.orderNumber,
-        goodsCatagory: sessionData.goodsCatagory,
-        invoiceValueMyr: sessionData.invoiceValueMyr,
-        shippingAgent: sessionData.shippingAgent,
-        trackingNumber: sessionData.trackingNumber,
-        importTaxRate: sessionData.importTaxRate,
-        exchangeRate: sessionData.exchangeRate,  //EXCHANGE RATE HERE
-        importTaxBndCents: sessionData.importTaxBndCents,
-        customerEmail: session.customer_details.email,
-        createdUnixTimestamp: session.created,
-        collectionPoint: sessionData.collectionPoint,
-        serviceFeeBndCents: sessionData.serviceFeeBndCents,
-        importTaxBndCents: sessionData.importTaxBndCents
-      }
-
-      if(SUCCESSFUL_ORDER.collectionPoint=='Miri'){
-        SUCCESSFUL_ORDER.collectionPointAddress1 = 'Parcel Hero'
-        SUCCESSFUL_ORDER.collectionPointAddress2 = 'Lot 1564, Permyjaya Technology Park'
-        SUCCESSFUL_ORDER.collectionPointAddress3 = 'Tudan, 98000, Miri, Sarawak'
-      } else {
-        SUCCESSFUL_ORDER.collectionPointAddress1 = 'Parcel Hero'
-        SUCCESSFUL_ORDER.collectionPointAddress2 = 'Lot 1564, Permyjaya Technology Park'
-        SUCCESSFUL_ORDER.collectionPointAddress3 = 'Tudan, 98000, Miri, Sarawak'
-      }
-
-      
-
-      res.render('success', {SUCCESSFUL_ORDER:SUCCESSFUL_ORDER, moment:moment}); //send params here.
-
-      const transporter = nodemailer.createTransport({
-        host: 'mail.parcelhero.my',
-        port: '465', // must be 587 for gmail
-        auth: {
-          user: 'info@parcelhero.my',
-          pass: 'parcelheroparcelhero'
-        }
-      })
-
-      console.log( "query pdf path: " + req.query.pdf_path);
-      
-      var mailOptionsCustomer = {
-        from: 'info@parcelhero.my',
-        to: SUCCESSFUL_ORDER.customerEmail,
-        subject: 'Parcel Hero Order',
-        html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment: moment }),
-        attachments: [{
-          filename: 'customer_invoice.pdf',
-          path: req.query.pdf_path,
-          contentType: 'application/pdf'
-        }],   
-      };
-
-
-      //////////// SET THE RECEIVERS ///////////////////
-      // var mailOptionsCompany = {
-      //   from: 'info@parcelhero.my',
-      //   to: 'yasmin@waterworthservices.com',
-      //   subject: 'Sending Email using Node.js',
-      //   html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment:moment })   
-      // };
-
-      // var mailOptionsCompany2 = {
-      //   from: 'info@parcelhero.my',
-      //   to: 'zac@waterworthservices.com',
-      //   subject: 'Sending Email using Node.js',
-      //   html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment:moment })   
-
-      // };
-      /////////////  SET THE RECEIVERS ///////////////
-    
-      // ACTUALLY SENDIN EMAIL. UNCOMMENT TO ENABLE! ///////////
-    transporter.sendMail(mailOptionsCustomer, async function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
-
-    // transporter.sendMail(mailOptionsCompany, async function(error, info){
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log('Email sent: ' + info.response);
-    //   }
-    // });
-    
-    // transporter.sendMail(mailOptionsCompany2, async function(error, info){
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log('Email sent: ' + info.response);
-    //   }
-    // });
-        // ACTUALLY SENDIN EMAIL. UNCOMMENT TO ENABLE! ///////////
-
-
-    }
-
-
     
 });
 
@@ -166,6 +48,8 @@ app.post("/miricollect", function(req,res){
 
 app.post("/registerOrderJerudong", upload.single("pdfInvoice"), async (req,res) =>{
   try{
+    console.log(req.body);
+
   // app.post("/registerOrder", async (req,res) =>{
     const pdfPath = __dirname+"/"+req.file.path;
     console.log("pdfPath:  " + pdfPath);
@@ -261,67 +145,148 @@ app.post("/registerOrderMiri", async (req,res) =>{
 
   // //////////////////////////////////////////
   // //////////////////////////////////////////
-  //   const taxRates = getTaxRates();
+    const taxRates = getTaxRates();
+    console.log(req.body);
 
-  //   let NEW_ORDER = {
-  //       fullName : JSON.stringify(req.body.inptFullName).replace(/[^a-zA-Z0-9+ ]/g, ""),
-  //       phoneNumber : JSON.stringify(req.body.inptPhoneNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
-  //       orderWebsite: JSON.stringify(req.body.inptOrderWebsite).replace(/[^a-zA-Z0-9+ ]/g, ""),
-  //       orderNumber: JSON.stringify(req.body.inptOrderNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
-  //       goodsCatagory: JSON.stringify(req.body.slctGoodsCatagory).replace(/[^a-zA-Z0-9+ ]/g, ""),
-  //       invoiceValueMyr: 0,
-  //       shippingAgent: JSON.stringify(req.body.inptShippingAgent).replace(/[^a-zA-Z0-9+ ]/g, ""),
-  //       trackingNumber: JSON.stringify(req.body.inptTrackingNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
-  //       importTaxRate: taxRates.get(req.body.slctGoodsCatagory),
-  //       exchangeRate: 3.2,  //EXCHANGE RATE HERE
-  //       collectionPoint: "Default",
-  //       serviceFeeBndCents: 0
+     let NEW_ORDER = {
+          fullName : JSON.stringify(req.body.inptFullName).replace(/[^a-zA-Z0-9+ ]/g, ""),
+          phoneNumber : JSON.stringify(req.body.inptPhoneNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+          orderWebsite: JSON.stringify(req.body.inptOrderWebsite).replace(/[^a-zA-Z0-9+ ]/g, ""),
+          orderNumber: JSON.stringify(req.body.inptOrderNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+          goodsCatagory: "" ,
+          invoiceValueMyr: 0,
+          shippingAgent: JSON.stringify(req.body.inptShippingAgent).replace(/[^a-zA-Z0-9+ ]/g, ""),
+          trackingNumber: JSON.stringify(req.body.inptTrackingNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+          importTaxRate: 0,
+         exchangeRate: 3.2,
+         collectionPoint: "Miri",
+          serviceFeeBndCents: 300,
+          importTaxBndCents: 0,
+     }
 
-  //   }
 
-  //   //collect in Miri
+       const JSON_NEW_ORDER = JSON.stringify(NEW_ORDER);
 
-  //     NEW_ORDER['collectionPoint'] = 'Miri';
-  //     NEW_ORDER['serviceFeeBndCents'] = 300;
-  //     NEW_ORDER['importTaxBndCents'] = 0;
-  //     const JSON_NEW_ORDER = JSON.stringify(NEW_ORDER);
+        const myProduct = await stripe.products.create({
+            name: 'One Package, Collect in Miri',
+            description: 'PLEASE CONFIRM THE FOLLOWING DETAILS: \n' +
+            '| Full Name: ' + NEW_ORDER.fullName +'\n' +
+            '| Phone Number: ' + NEW_ORDER.phoneNumber +'\n' +
+            '| Order Website: '+ NEW_ORDER.orderWebsite +'\n' +
+            '| Order Number: ' + NEW_ORDER.orderNumber +'\n' +
+            '| Shipping Agent: ' + NEW_ORDER.shippingAgent +'\n' +
+            '| Tracking Number: ' + NEW_ORDER.trackingNumber 
+        });
 
-  //       const myProduct = await stripe.products.create({
-  //           name: 'One Package, Collect in Miri',
-  //           description: 'PLEASE CONFIRM THE FOLLOWING DETAILS: \n' +
-  //           '| Full Name: ' + NEW_ORDER.fullName +'\n' +
-  //           '| Phone Number: ' + NEW_ORDER.phoneNumber +'\n' +
-  //           '| Order Website: '+ NEW_ORDER.orderWebsite +'\n' +
-  //           '| Order Number: ' + NEW_ORDER.orderNumber +'\n' +
-  //           '| Shipping Agent: ' + NEW_ORDER.shippingAgent +'\n' +
-  //           '| Tracking Number: ' + NEW_ORDER.trackingNumber 
-  //       });
+        const myPrice =  await stripe.prices.create({
+         unit_amount: 300,
+         currency: 'bnd',
+         product: myProduct.id,
+        });
 
-  //       const myPrice =  await stripe.prices.create({
-  //        unit_amount: 300,
-  //        currency: 'bnd',
-  //        product: myProduct.id,
-  //       });
-
-  //       const session = await stripe.checkout.sessions.create({
-  //           line_items: [
-  //             {
-  //               // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-  //               price: myPrice.id,
-  //               quantity: 1,
-  //             },
-  //           ],
-  //           mode: 'payment',
-  //           success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${pdfPath}`,
-  //           cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
-  //         });
-  //       //   console.log(res);
-  //       res.redirect(303, session.url);
+        const session = await stripe.checkout.sessions.create({
+            line_items: [
+              {
+                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                price: myPrice.id,
+                quantity: 1,
+              },
+            ],
+            mode: 'payment',
+            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${""}`,
+            cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
+          });
+        //   console.log(res);
+        res.redirect(303, session.url);
 
         
   //////////////////////////////////////////
   //////////////////////////////////////////
 
+});
+
+app.get("/paymentSuccess", async (req,res) =>{
+
+    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+    if(session.payment_status==='paid'){
+      
+      const sessionData =  JSON.parse(req.query.order_id)
+
+      let SUCCESSFUL_ORDER = {
+        fullName : sessionData.fullName,
+        phoneNumber : sessionData.phoneNumber,
+        orderWebsite: sessionData.orderWebsite,
+        orderNumber: sessionData.orderNumber,
+        goodsCatagory: sessionData.goodsCatagory,
+        invoiceValueMyr: sessionData.invoiceValueMyr,
+        shippingAgent: sessionData.shippingAgent,
+        trackingNumber: sessionData.trackingNumber,
+        importTaxRate: sessionData.importTaxRate,
+        exchangeRate: sessionData.exchangeRate,  //EXCHANGE RATE HERE
+        importTaxBndCents: sessionData.importTaxBndCents,
+        customerEmail: session.customer_details.email,
+        createdUnixTimestamp: session.created,
+        collectionPoint: sessionData.collectionPoint, // Miri or Jerudong
+        serviceFeeBndCents: sessionData.serviceFeeBndCents,
+        importTaxBndCents: sessionData.importTaxBndCents
+      }
+
+      const transporter = nodemailer.createTransport({
+        host: 'mail.parcelhero.my',
+        port: '465', 
+        auth: {
+          user: 'info@parcelhero.my',
+          pass: 'parcelheroparcelhero'
+        }
+      })
+
+      if(SUCCESSFUL_ORDER.collectionPoint=='Miri'){
+        SUCCESSFUL_ORDER.collectionPointAddress1 = 'Parcel Hero'
+        SUCCESSFUL_ORDER.collectionPointAddress2 = 'Lot 1564, Permyjaya Technology Park'
+        SUCCESSFUL_ORDER.collectionPointAddress3 = 'Tudan, 98000, Miri, Sarawak'
+
+        var mailOptionsCustomer = {
+          from: 'info@parcelhero.my',
+          to: SUCCESSFUL_ORDER.customerEmail,
+          subject: 'Parcel Hero Order',
+          html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment: moment }),
+        };
+
+      } else {
+        SUCCESSFUL_ORDER.collectionPointAddress1 = 'Parcel Hero'
+        SUCCESSFUL_ORDER.collectionPointAddress2 = 'Lot 1564, Permyjaya Technology Park'
+        SUCCESSFUL_ORDER.collectionPointAddress3 = 'Tudan, 98000, Miri, Sarawak'
+
+        var mailOptionsCustomer = {
+          from: 'info@parcelhero.my',
+          to: SUCCESSFUL_ORDER.customerEmail,
+          subject: 'Parcel Hero Order',
+          html: await ejs.renderFile(__dirname +  "/views/successEmail.ejs", { SUCCESSFUL_ORDER: SUCCESSFUL_ORDER, moment: moment }),
+          attachments: [{
+            filename: 'customer_invoice.pdf',
+            path: req.query.pdf_path,
+            contentType: 'application/pdf'
+          }],   
+        };
+      }
+
+      res.render('success', {SUCCESSFUL_ORDER:SUCCESSFUL_ORDER, moment:moment}); //send params here.
+      
+
+      // ACTUALLY SENDIN EMAIL. UNCOMMENT TO ENABLE! ///////////
+    transporter.sendMail(mailOptionsCustomer, async function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+
+    }
+
+
+    
 });
 
 
