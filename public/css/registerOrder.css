@@ -5,3 +5,7 @@
 select {
     background-color: #63B7E0;
 }
+
+.radioButton{
+    outline:3px solid #63B7E0
+}

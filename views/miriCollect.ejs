@@ -17,7 +17,6 @@
   
 <body>
     
-    
 <%- include("navbar") -%>
 
 <section>
@@ -33,8 +32,8 @@
           <div class="card shadow-sm">
             <img src="/images/add_shipping_address.png" width="100%" focusable="false">
             <div class="instruction-card card-body">
-              <p class="text-body-primary">Use Parcel Hero Shipping Info</p>
-              <p class="text-body-secondary">Select your items on your favorite E-Commerce website, checkout, and edit the shipping information shown below.</p>              <div class="d-flex justify-content-between align-items-center">
+              <p class="text-body-primary">Order your item from your favorite E-Commerce website using Parcel Hero's address</p>
+              <p class="text-body-secondary">Your order will then be recieved at Parcel Hero's warehouse in Miri.</p>              <div class="d-flex justify-content-between align-items-center">
               </div>
             </div>
           </div>
@@ -43,8 +42,8 @@
           <div class="card shadow-sm">
             <img src="/images/place_order.png" width="100%" focusable="false">
             <div class="instruction-card card-body">
-              <p class="text-body-primary">Order Your Item Online</p>
-              <p class="text-body-secondary">Place your order. The item will then be received at our warehouse in Miri where it will be dispatched to your prefered collection location.</p>              <div class="d-flex justify-content-between align-items-center">
+              <p class="text-body-primary">Save the order invoice as pdf</p>
+              <p class="text-body-secondary">Find the confirmation email, click 'print' and under 'destination' chose 'save as pdf'. You will need to upload this invoice to complete registration.</p>              <div class="d-flex justify-content-between align-items-center">
               </div>
             </div>
           </div>
@@ -53,8 +52,8 @@
           <div class="card shadow-sm">
             <img src="/images/parcelhero_register.png" width="100%" focusable="false">
             <div class="instruction-card card-body">
-              <p class="text-body-primary">Register on ParcelHero</p>
-              <p class="text-body-secondary">After completing registration and payment on Parcel Hero's website, you will be informed by WhatsApp when your order is ready to collect.</p>
+              <p class="text-body-primary">Register and purchase the Parcel Hero service here</p>
+              <p class="text-body-secondary">Complete the registration by uploading the order invoice and filling the required information.</p>
               <div class="d-flex justify-content-between align-items-center">
 
               </div>
@@ -74,7 +73,47 @@
 
   <br><br><br><br><br><br><br><br>
 
+  <h1 id="testHeader">This is a test</h1>
+
+
+ 
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <!-- <script src="~/formatPrice.js"></script> -->
+  <script>
+  $(document).ready(function(){
   
+  
+  $('#radioMiriCollect').change(function() {
+    $(".hideDivForMiri").addClass("invisible");
+    $(".requiredForJeudong").removeAttr('required');
+    $('#registerOrderForm').attr('action', '/registerOrderMiri');
+  });
+  
+  $('#radioBruneiCollect').change(function() {
+    $(".hideDivForMiri").removeClass("invisible");
+    $(".requiredForJeudong").attr('required', '');
+    $('#registerOrderForm').attr('action', '/registerOrderJerudong');
+  
+  });
+  
+      var collectPoint = '<%= collectPoint %>';
+      if(collectPoint == 'miriCollect'){
+      $('#testHeader').text("in miri " + collectPoint);
+      $('#radioMiriCollect').prop('checked', true);
+      $('#radioBruneiCollect').prop('checked', false);
+      $('#radioMiriCollect').trigger("change");
+  
+      }else{
+      $('#testHeader').text("in jerudong " + collectPoint);
+      $('#radioMiriCollect').prop('checked', false);
+      $('#radioBruneiCollect').prop('checked', true);
+      $('#radioBruneiCollect').trigger("change");
+  
+      }
+  
+  });
+  </script>
 </body>
 
 <%- include("footer") -%>

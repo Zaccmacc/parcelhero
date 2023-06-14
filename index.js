@@ -157,19 +157,15 @@ app.get("/paymentCancelled", function(req,res){
     
 });
 
-app.get("/miricollect", function(req,res){
+app.post("/miricollect", function(req,res){
+  let collectPoint = req.body.btnMiriCollect;
 
-    res.render('miriCollect', {}) //send params here.
-    
-});
-
-app.get("/bruneicollect", function(req,res){
-
-    res.render('bruneiCollect', {}) //send params here.
+  res.render('miriCollect', {collectPoint:collectPoint}) //send params here.
     
 });
 
 app.post("/registerOrderJerudong", upload.single("pdfInvoice"), async (req,res) =>{
+  try{
   // app.post("/registerOrder", async (req,res) =>{
     const pdfPath = __dirname+"/"+req.file.path;
     console.log("pdfPath:  " + pdfPath);
@@ -251,69 +247,80 @@ app.post("/registerOrderJerudong", upload.single("pdfInvoice"), async (req,res) 
         res.redirect(303, session.url);
 
     
-
+      }catch(err){
+        
+      }
 });
 
 
 app.post("/registerOrderMiri", async (req,res) =>{
+  console.log("HERE!");
   // app.post("/registerOrder", async (req,res) =>{
 
-    const taxRates = getTaxRates();
 
-    let NEW_ORDER = {
-        fullName : JSON.stringify(req.body.inptFullName).replace(/[^a-zA-Z0-9+ ]/g, ""),
-        phoneNumber : JSON.stringify(req.body.inptPhoneNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
-        orderWebsite: JSON.stringify(req.body.inptOrderWebsite).replace(/[^a-zA-Z0-9+ ]/g, ""),
-        orderNumber: JSON.stringify(req.body.inptOrderNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
-        goodsCatagory: JSON.stringify(req.body.slctGoodsCatagory).replace(/[^a-zA-Z0-9+ ]/g, ""),
-        invoiceValueMyr: 0,
-        shippingAgent: JSON.stringify(req.body.inptShippingAgent).replace(/[^a-zA-Z0-9+ ]/g, ""),
-        trackingNumber: JSON.stringify(req.body.inptTrackingNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
-        importTaxRate: taxRates.get(req.body.slctGoodsCatagory),
-        exchangeRate: 3.2,  //EXCHANGE RATE HERE
-        collectionPoint: "Default",
-        serviceFeeBndCents: 0
 
-    }
+  // //////////////////////////////////////////
+  // //////////////////////////////////////////
+  //   const taxRates = getTaxRates();
 
-    //collect in Miri
+  //   let NEW_ORDER = {
+  //       fullName : JSON.stringify(req.body.inptFullName).replace(/[^a-zA-Z0-9+ ]/g, ""),
+  //       phoneNumber : JSON.stringify(req.body.inptPhoneNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+  //       orderWebsite: JSON.stringify(req.body.inptOrderWebsite).replace(/[^a-zA-Z0-9+ ]/g, ""),
+  //       orderNumber: JSON.stringify(req.body.inptOrderNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+  //       goodsCatagory: JSON.stringify(req.body.slctGoodsCatagory).replace(/[^a-zA-Z0-9+ ]/g, ""),
+  //       invoiceValueMyr: 0,
+  //       shippingAgent: JSON.stringify(req.body.inptShippingAgent).replace(/[^a-zA-Z0-9+ ]/g, ""),
+  //       trackingNumber: JSON.stringify(req.body.inptTrackingNumber).replace(/[^a-zA-Z0-9+ ]/g, ""),
+  //       importTaxRate: taxRates.get(req.body.slctGoodsCatagory),
+  //       exchangeRate: 3.2,  //EXCHANGE RATE HERE
+  //       collectionPoint: "Default",
+  //       serviceFeeBndCents: 0
 
-      NEW_ORDER['collectionPoint'] = 'Miri';
-      NEW_ORDER['serviceFeeBndCents'] = 300;
-      NEW_ORDER['importTaxBndCents'] = 0;
-      const JSON_NEW_ORDER = JSON.stringify(NEW_ORDER);
+  //   }
 
-        const myProduct = await stripe.products.create({
-            name: 'One Package, Collect in Miri',
-            description: 'PLEASE CONFIRM THE FOLLOWING DETAILS: \n' +
-            '| Full Name: ' + NEW_ORDER.fullName +'\n' +
-            '| Phone Number: ' + NEW_ORDER.phoneNumber +'\n' +
-            '| Order Website: '+ NEW_ORDER.orderWebsite +'\n' +
-            '| Order Number: ' + NEW_ORDER.orderNumber +'\n' +
-            '| Shipping Agent: ' + NEW_ORDER.shippingAgent +'\n' +
-            '| Tracking Number: ' + NEW_ORDER.trackingNumber 
-        });
+  //   //collect in Miri
 
-        const myPrice =  await stripe.prices.create({
-         unit_amount: 300,
-         currency: 'bnd',
-         product: myProduct.id,
-        });
+  //     NEW_ORDER['collectionPoint'] = 'Miri';
+  //     NEW_ORDER['serviceFeeBndCents'] = 300;
+  //     NEW_ORDER['importTaxBndCents'] = 0;
+  //     const JSON_NEW_ORDER = JSON.stringify(NEW_ORDER);
 
-        const session = await stripe.checkout.sessions.create({
-            line_items: [
-              {
-                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                price: myPrice.id,
-                quantity: 1,
-              },
-            ],
-            mode: 'payment',
-            success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${pdfPath}`,
-            cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
-          });
-        //   console.log(res);
-        res.redirect(303, session.url);
+  //       const myProduct = await stripe.products.create({
+  //           name: 'One Package, Collect in Miri',
+  //           description: 'PLEASE CONFIRM THE FOLLOWING DETAILS: \n' +
+  //           '| Full Name: ' + NEW_ORDER.fullName +'\n' +
+  //           '| Phone Number: ' + NEW_ORDER.phoneNumber +'\n' +
+  //           '| Order Website: '+ NEW_ORDER.orderWebsite +'\n' +
+  //           '| Order Number: ' + NEW_ORDER.orderNumber +'\n' +
+  //           '| Shipping Agent: ' + NEW_ORDER.shippingAgent +'\n' +
+  //           '| Tracking Number: ' + NEW_ORDER.trackingNumber 
+  //       });
+
+  //       const myPrice =  await stripe.prices.create({
+  //        unit_amount: 300,
+  //        currency: 'bnd',
+  //        product: myProduct.id,
+  //       });
+
+  //       const session = await stripe.checkout.sessions.create({
+  //           line_items: [
+  //             {
+  //               // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+  //               price: myPrice.id,
+  //               quantity: 1,
+  //             },
+  //           ],
+  //           mode: 'payment',
+  //           success_url: `${YOUR_DOMAIN}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}&order_id=${JSON_NEW_ORDER}&pdf_path=${pdfPath}`,
+  //           cancel_url: `${YOUR_DOMAIN}/paymentCancelled`,
+  //         });
+  //       //   console.log(res);
+  //       res.redirect(303, session.url);
+
+        
+  //////////////////////////////////////////
+  //////////////////////////////////////////
 
 });
 

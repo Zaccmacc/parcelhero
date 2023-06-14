@@ -21,14 +21,14 @@
             </div>
             <div class="row">
               <div class="col-xl-6 col-fluid"> <!-- left button -->
-              <form action="/miricollect">
-                <input type="submit" class="btn btn-light btnGetStarted" value="Collect in Miri"></button>
-                </form>
+              <form action="/miricollect" method="post">
+                <button type="submit" class="btn btn-light btnGetStarted" value="miriCollect" name="btnMiriCollect">Collect in Miri</button>
+              </form>
               </div>
               <div class="col-xl-6 col-fluid"> <!-- left button -->
-                <form action="/bruneicollect">
-                  <input type="submit" class="btn btn-light btnGetStarted" value="Collect in Jerudong"></button>
-                  </form>
+                <form action="/miricollect" method="post">
+                  <button type="submit" class="btn btn-light btnGetStarted" value="jerudongCollect" name="btnMiriCollect">Collect in Jerudong</button>
+                </form>
               </div>
             </div>
 
@@ -105,8 +105,8 @@
                 <br>
               </ul>
 
-              <form action="/miricollect">
-              <input type="submit" class="w-100 btn btn-lg btnGetStarted" value="Get Started"></button>
+              <form action="/miricollect" method="post">
+                <button type="submit" class="btn btn-light btnGetStarted" value="miriCollect" name="btnMiriCollect">Collect in Miri</button>
               </form>
             
             </div>
@@ -123,9 +123,9 @@
                 <li>Import duty applies</li>
                 <li>Collect from Jerudong</li>
               </ul>
-              <form action="/bruneicollect">
-                <input type="submit" class="w-100 btn btn-lg btnGetStarted" value="Get Started"></button>
-                </form>
+              <form action="/miricollect" method="post">
+                <button type="submit" class="btn btn-light btnGetStarted" value="jerudongCollect" name="btnMiriCollect">Collect in Jerudong</button>
+              </form>
             </div>
           </div>
         </div>
